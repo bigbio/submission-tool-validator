@@ -18,7 +18,7 @@ This tool helps user to validate submissions in the client side before submittin
 You can create manually or with our own tool or with the submission tool the _submission.px_ file. This file contains the metadata around the file including title, description.
 
 ```
-$ java -jar submission-tool-validator-1.0.0-bin.jar -v -px /path/to/data/submission.px 
+$ java -jar submission-tool-validator-{version}-bin.jar -v -px /path/to/data/submission.px
 ```
 
 ## Contact
