@@ -17,7 +17,9 @@ This tool helps user to validate submissions in the client side before submittin
 ### PX validation.
 You can create manually or with our own tool or with the submission tool the _submission.px_ file. This file contains the metadata around the file including title, description.
 
-$ java -jar submission-tool-validator.jar -v -px /path/to/data/submission.px -reportfile /path/to/output/outputReport.txt
+```
+$ java -jar submission-tool-validator-1.0.0-bin.jar -v -px /path/to/data/submission.px 
+```
 
 ## Contact
 To get in touch, please either email <pride-support@ebi.ac.uk> or raise an issue on the [issues page](https://github.com/PRIDE-Toolsuite/PGConverter/issues).
