@@ -24,8 +24,15 @@ public abstract class Report implements IReport{
 
     }
 
+    @Override
+    public String toString() {
+        StringBuilder error = new StringBuilder();
+        for(Map.Entry er: errors)
+            error.append(((Exception)er.getKey()).toString()).append(" == Level Error: ").append(er.getValue()).append(" ==\n");
+        return error.toString();
+    }
 
-    //  private String status = "";
+//  private String status = "";
 //  private String fileName = "";
 //  private String name = "";
 //  private String shortLabel = "";

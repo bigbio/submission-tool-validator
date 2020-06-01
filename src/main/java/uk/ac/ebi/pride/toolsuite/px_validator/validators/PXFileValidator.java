@@ -26,7 +26,8 @@ public class PXFileValidator implements Validator {
         if(cmd.hasOption(Utility.ARG_PXFILE)){
             file = new File(cmd.getOptionValue(Utility.ARG_PXFILE));
             if (!file.exists()){
-                throw new IOException("The provided file name can't be found -- " + cmd.getOptionValue(Utility.ARG_PXFILE));
+                throw new IOException("The provided file name can't be found -- "
+                        + cmd.getOptionValue(Utility.ARG_PXFILE));
             }
         }else{
             throw new IOException("In order to validate a submission.px file the argument -px should be provided");
