@@ -1,8 +1,7 @@
 package uk.ac.ebi.pride.toolsuite.px_validator;
 
 import org.apache.commons.cli.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.log4j.Logger;
 import uk.ac.ebi.pride.toolsuite.px_validator.utils.IReport;
 
 import java.util.*;
@@ -14,9 +13,9 @@ import static uk.ac.ebi.pride.toolsuite.px_validator.utils.Utility.*;
  *
  * @author ypriverol
  */
-public class MainApp {
+public class SubmissionToolValidator {
 
-  private static final Logger log = LoggerFactory.getLogger(MainApp.class);
+  private static final Logger log = Logger.getLogger(SubmissionToolValidator.class);
 
   /**
    * Main class that gets run. Parses command line arguments, starts either the converter or validation operations.
@@ -27,7 +26,7 @@ public class MainApp {
     log.info("Starting application....");
     log.info("Program arguments: " + Arrays.toString(args));
     try {
-      CommandLine cmd = MainApp.parseArgs(args);
+      CommandLine cmd = SubmissionToolValidator.parseArgs(args);
       if (args.length > 0) {
         if (cmd.hasOption(ARG_VALIDATION)) {
           IReport report = Validator.startValidation(cmd);

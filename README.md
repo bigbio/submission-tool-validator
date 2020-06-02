@@ -21,5 +21,21 @@ You can create manually or with our own tool or with the submission tool the _su
 $ java -jar submission-tool-validator-{version}-bin.jar -v -px /path/to/data/submission.px
 ```
 
+### Validation of mzIdentML and mzTab Files
+
+Validation an mzTab
+
+```
+$ java -jar submission-tool-validator-{version}-bin.jar -v -mztab /path/to/data/file.mztab
+```
+
+Validation an mzIdentML
+
+```
+$ java -jar submission-tool-validator-{version}-bin.jar -v -mzid /path/to/data/file.mzid
+```
+
+
+
 ## Contact
 To get in touch, please either email <pride-support@ebi.ac.uk> or raise an issue on the [issues page](https://github.com/PRIDE-Toolsuite/PGConverter/issues).
