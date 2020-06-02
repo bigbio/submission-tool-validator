@@ -4,6 +4,9 @@ import org.apache.commons.cli.CommandLine;
 import uk.ac.ebi.pride.data.exception.SubmissionFileException;
 import uk.ac.ebi.pride.data.io.SubmissionFileParser;
 import uk.ac.ebi.pride.data.model.Submission;
+import uk.ac.ebi.pride.data.validation.SubmissionValidator;
+import uk.ac.ebi.pride.data.validation.ValidationMessage;
+import uk.ac.ebi.pride.data.validation.ValidationReport;
 import uk.ac.ebi.pride.toolsuite.px_validator.utils.IReport;
 import uk.ac.ebi.pride.toolsuite.px_validator.utils.PXReport;
 import uk.ac.ebi.pride.toolsuite.px_validator.utils.Utility;
@@ -39,8 +42,13 @@ public class PXFileValidator implements Validator {
         IReport report = new PXReport();
         try {
             Submission submission = SubmissionFileParser.parse(file);
+            ValidationReport submissionValidator = SubmissionValidator.validateSubmission(submission);
+            for(ValidationMessage message: submissionValidator.getMessages()){
+                report.addException(new IOException(message.getMessage()), message.getType());
+            }
+
         } catch (SubmissionFileException e) {
-            report.addException(e, Utility.ErrorCode.ERROR);
+            report.addException(e, ValidationMessage.Type.ERROR);
 
         }
         return report;

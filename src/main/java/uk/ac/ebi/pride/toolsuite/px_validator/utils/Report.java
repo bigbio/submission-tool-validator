@@ -1,6 +1,7 @@
 package uk.ac.ebi.pride.toolsuite.px_validator.utils;
 
 import org.apache.commons.lang.StringUtils;
+import uk.ac.ebi.pride.data.validation.ValidationMessage;
 
 import java.util.*;
 import java.util.logging.Level;
@@ -14,13 +15,13 @@ import java.util.logging.Level;
 public abstract class Report implements IReport{
 
     // This map store the errors for each Report
-    List<Map.Entry<Exception, Utility.ErrorCode>> errors = new ArrayList<>();
+    List<Map.Entry<Exception, ValidationMessage.Type>> errors = new ArrayList<>();
 
     public Report() {
     }
 
-    public void addException(Exception exception, Utility.ErrorCode code){
-        errors.add(new AbstractMap.SimpleEntry<Exception, Utility.ErrorCode>(exception, code));
+    public void addException(Exception exception, ValidationMessage.Type code){
+        errors.add(new AbstractMap.SimpleEntry<Exception, ValidationMessage.Type>(exception, code));
 
     }
 
