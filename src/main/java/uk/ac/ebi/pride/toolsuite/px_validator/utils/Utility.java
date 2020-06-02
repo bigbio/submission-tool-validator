@@ -19,26 +19,16 @@ public class Utility {
 
   public static final String ARG_VALIDATION = "v";
   public static final String ARG_CONVERSION = "c";
-  public static final String ARG_MESSAGE = "m";
   public static final String ARG_MZID = "mzid";
   public static final String ARG_PXFILE = "px";
   public static final String ARG_PEAK = "peak";
   public static final String ARG_PEAKS = "peaks";
-  public static final String ARG_PRIDEXML = "pridexml";
   public static final String ARG_MZTAB = "mztab";
-  public static final String ARG_PROBED = "probed";
-  public static final String ARG_BIGBED = "bigbed";
   public static final String ARG_OUTPUTFILE = "outputfile";
   public static final String ARG_INPUTFILE = "inputfile";
   public static final String ARG_OUTPUTTFORMAT = "outputformat";
   public static final String ARG_CHROMSIZES = "chromsizes";
   public static final String ARG_REPORTFILE = "reportfile";
-  public static final String ARG_SKIP_SERIALIZATION = "skipserialization";
-  public static final String MS_INSTRUMENT_MODEL_AC = "MS:1000031";
-  public static final String MS_SOFTWARE_AC = "MS:1000531";
-  public static final String MS_CONTACT_EMAIL_AC = "MS:1000589";
-  public static final String MS_SOFTWARE_NAME = "software";
-  public static final String MS_INSTRUMENT_MODEL_NAME = "instrument model";
   public static final String ARG_SCHEMA_VALIDATION = "schema";
   public static final String ARG_SCHEMA_ONLY_VALIDATION = "schemaonly";
   public static final String ARG_FAST_VALIDATION = "fastvalidation";
@@ -48,12 +38,10 @@ public class Utility {
    * The supported file types.
    */
   public enum FileType {
-    MZID("mzid"), MZTAB("mztab"),
-    PRIDEXML("xml"),
-    ASQL("as"),
-    PROBED("pro.bed"),
-    BIGBED("bb"), UNKNOWN("");
-    private String format;
+    MZID("mzid"),
+    MZTAB("mztab");
+
+    private final String format;
 
     FileType(String format) {
         this.format = format;
@@ -68,7 +56,7 @@ public class Utility {
       ERROR("Major structure error"),
       WARNING("Small error in the structure of the file");
 
-      String message;
+      final String message;
 
       ErrorCode(String message ) {
         this.message = message;
@@ -102,6 +90,7 @@ public class Utility {
     }
     File tempFile = null;
     try {
+      assert file != null;
       tempFile = new File (Files.createTempDir(), file.getName());
       File tempParentFile = tempFile.getParentFile();
       tempFile.deleteOnExit();

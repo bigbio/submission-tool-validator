@@ -4,8 +4,7 @@ import org.apache.commons.cli.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.ac.ebi.pride.toolsuite.px_validator.utils.IReport;
-import uk.ac.ebi.pride.toolsuite.px_validator.utils.Report;
-import uk.ac.ebi.pride.toolsuite.px_validator.utils.Utility;
+
 import java.util.*;
 
 import static uk.ac.ebi.pride.toolsuite.px_validator.utils.Utility.*;
@@ -32,7 +31,8 @@ public class MainApp {
       if (args.length > 0) {
         if (cmd.hasOption(ARG_VALIDATION)) {
           IReport report = Validator.startValidation(cmd);
-          log.info(report.toString());
+          if (report != null)
+            log.info(report.toString());
         }  else {
           log.error("Did not find validation command from arguments ");
           Arrays.stream(args).forEach(log::error);
@@ -50,7 +50,7 @@ public class MainApp {
    * @return a CommandLine object of the parsed command line arguments.
    * @throws ParseException if there are problems parsing the command line arguments.
    */
-  public static CommandLine parseArgs(String[] args) throws ParseException{
+  private static CommandLine parseArgs(String[] args) throws ParseException{
     Options options = new Options();
     options.addOption(ARG_VALIDATION, false, "start to validate a file");
     options.addOption(ARG_CONVERSION, false, "start to convert a file");
@@ -59,7 +59,6 @@ public class MainApp {
     options.addOption(ARG_PEAK, true, "peak file");
     options.addOption(ARG_PEAKS, true, "peak files");
     options.addOption(ARG_MZTAB, true, "mztab file");
-    options.addOption(ARG_PROBED, true, "probed file");
     options.addOption(ARG_OUTPUTFILE, true, "exact output file");
     options.addOption(ARG_OUTPUTTFORMAT, true, "exact output file format");
     options.addOption(ARG_INPUTFILE, true, "exact input file");

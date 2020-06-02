@@ -1,10 +1,8 @@
 package uk.ac.ebi.pride.toolsuite.px_validator.utils;
 
-import org.apache.commons.lang.StringUtils;
 import uk.ac.ebi.pride.data.validation.ValidationMessage;
 
 import java.util.*;
-import java.util.logging.Level;
 
 /**
  * This class provides details of assay file(s) as a validation report for key information,
@@ -12,16 +10,16 @@ import java.util.logging.Level;
  *
  * @author ypriverol
  */
-public abstract class Report implements IReport{
+public class Report implements IReport{
 
     // This map store the errors for each Report
-    List<Map.Entry<Exception, ValidationMessage.Type>> errors = new ArrayList<>();
+    private final List<Map.Entry<Exception, ValidationMessage.Type>> errors = new ArrayList<>();
 
     public Report() {
     }
 
     public void addException(Exception exception, ValidationMessage.Type code){
-        errors.add(new AbstractMap.SimpleEntry<Exception, ValidationMessage.Type>(exception, code));
+        errors.add(new AbstractMap.SimpleEntry<>(exception, code));
 
     }
 
@@ -29,7 +27,10 @@ public abstract class Report implements IReport{
     public String toString() {
         StringBuilder error = new StringBuilder();
         for(Map.Entry er: errors)
-            error.append(((Exception)er.getKey()).toString()).append(" == Level Error: ").append(er.getValue()).append(" ==\n");
+            error.append(er.getKey().toString()).append(" == Level Error: ").append(er.getValue()).append(" ==\n");
+        if(errors.isEmpty()){
+            error.append("No errors found -- OK").append("\n");
+        }
         return error.toString();
     }
 
@@ -122,7 +123,7 @@ public abstract class Report implements IReport{
 //   * @param assayFileSummary the assay summary to extract information from.
 //   * @return the report as a properly formatted String.
 //   */
-//  public String toString(AssayFileSummary assayFileSummary) {
+//  public String toString(ResultReport assayFileSummary) {
 //    name = assayFileSummary.getName();
 //    shortLabel = assayFileSummary.getShortLabel();
 //    contacts = assayFileSummary.getContacts();

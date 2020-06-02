@@ -8,7 +8,7 @@ import uk.ac.ebi.pride.data.validation.SubmissionValidator;
 import uk.ac.ebi.pride.data.validation.ValidationMessage;
 import uk.ac.ebi.pride.data.validation.ValidationReport;
 import uk.ac.ebi.pride.toolsuite.px_validator.utils.IReport;
-import uk.ac.ebi.pride.toolsuite.px_validator.utils.PXReport;
+import uk.ac.ebi.pride.toolsuite.px_validator.utils.Report;
 import uk.ac.ebi.pride.toolsuite.px_validator.utils.Utility;
 
 import java.io.File;
@@ -16,12 +16,10 @@ import java.io.IOException;
 
 public class PXFileValidator implements Validator {
 
-    File file;
-    private static Validator validator;
+    private File file;
 
     public static Validator getInstance(CommandLine cmd) throws Exception {
-        validator = new PXFileValidator(cmd);
-        return validator;
+        return new PXFileValidator(cmd);
     }
 
     private PXFileValidator(CommandLine cmd) throws Exception{
@@ -39,7 +37,7 @@ public class PXFileValidator implements Validator {
 
     @Override
     public IReport validate(){
-        IReport report = new PXReport();
+        IReport report = new Report();
         try {
             Submission submission = SubmissionFileParser.parse(file);
             ValidationReport submissionValidator = SubmissionValidator.validateSubmission(submission);

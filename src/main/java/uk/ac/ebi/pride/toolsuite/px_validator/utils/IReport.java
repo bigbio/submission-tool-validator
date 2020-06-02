@@ -6,8 +6,8 @@ import java.io.Serializable;
 
 public interface IReport extends Serializable {
 
-    public String toString();
+    String toString();
 
-    public void addException(Exception e, ValidationMessage.Type code);
+    void addException(Exception e, ValidationMessage.Type code);
 
 }
