@@ -8,7 +8,7 @@ This tool helps user to validate submissions in the client side before submittin
 * 2+ GB RAM for complex mzIdentML files.
 
 ## Instructions
-1. [Download](--soon--) the tool as a zip archive file.
+1. [Download](https://github.com/PRIDE-Archive/submission-tool-validator/releases/download/v1.0.0/submission-tool-validator-1.0.0-bin.jar) the tool as a zip archive file.
 2. Extract the zip file to a directory.
 3. From a terminal / command prompt, navigate to this new extracted directory and execute a command as described under the 'usage' section below.
 
@@ -38,4 +38,4 @@ $ java -jar submission-tool-validator-{version}-bin.jar -v -mzid /path/to/data/f
 
 
 ## Contact
-To get in touch, please either email <pride-support@ebi.ac.uk> or raise an issue on the [issues page](https://github.com/PRIDE-Toolsuite/PGConverter/issues).
+To get in touch, please either email <pride-support@ebi.ac.uk> or raise an issue on the [issues page](https://github.com/PRIDE-Archive/submission-tool-validator/issues).
