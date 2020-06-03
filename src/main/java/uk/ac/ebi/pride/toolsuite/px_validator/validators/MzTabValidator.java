@@ -43,6 +43,21 @@ public class MzTabValidator implements Validator{
         try {
             MZTabFileParser mzTab = new MZTabFileParser(file, new FileOutputStream(file.getAbsolutePath() + "-mztab-errors.out"));
 
+            for(MZTabError message: mzTab.getErrorList().getErrorList()){
+                ValidationMessage.Type errType;
+
+                if(message.getType().getLevel() == MZTabErrorType.Level.Error)
+                    errType = ValidationMessage.Type.ERROR;
+                else if(message.getType().getLevel() == MZTabErrorType.Level.Warn)
+                    errType = ValidationMessage.Type.WARNING;
+                else
+                    errType = ValidationMessage.Type.INFO;
+                report.addException(new IOException(message.getMessage()), errType);
+            }
+
+            if(report.getNumErrors() > 0)
+                return report;
+
             PIASimpleCompiler piaCompiler = new PIASimpleCompiler();
             piaCompiler.getDataFromFile(file.getName(), file.getAbsolutePath(), null, InputFileParserFactory.InputFileTypes.MZTAB_INPUT.getFileTypeShort());
             piaCompiler.buildClusterList();
@@ -56,17 +71,7 @@ public class MzTabValidator implements Validator{
             report.setNumberOfProteins(numProteins);
             report.setNumberOfPSMs(numPSMs);
 
-            for(MZTabError message: mzTab.getErrorList().getErrorList()){
-                ValidationMessage.Type errType;
 
-                if(message.getType().getLevel() == MZTabErrorType.Level.Error)
-                    errType = ValidationMessage.Type.ERROR;
-                else if(message.getType().getLevel() == MZTabErrorType.Level.Warn)
-                    errType = ValidationMessage.Type.WARNING;
-                else
-                    errType = ValidationMessage.Type.INFO;
-                report.addException(new IOException(message.getMessage()), errType);
-            }
 
         } catch (IOException e) {
             report.addException(e, ValidationMessage.Type.ERROR);

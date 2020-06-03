@@ -57,7 +57,6 @@ public class Validator {
       }
     }else {
       log.error("Unable to validate unknown input file type");
-      return null;
     }
     return report;
   }

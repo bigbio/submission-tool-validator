@@ -41,9 +41,12 @@ public class MzIdValidator implements Validator{
     public IReport validate() {
 
         IReport report = validateMzidSchema(file);
+        if(report.getNumErrors() > 0)
+            return report;
 
         PIASimpleCompiler piaCompiler = new PIASimpleCompiler();
-        piaCompiler.getDataFromFile(file.getName(), file.getAbsolutePath(), null, InputFileParserFactory.InputFileTypes.MZIDENTML_INPUT.getFileTypeShort());
+        piaCompiler.getDataFromFile(file.getName(), file.getAbsolutePath(),
+                null, InputFileParserFactory.InputFileTypes.MZIDENTML_INPUT.getFileTypeShort());
         piaCompiler.buildClusterList();
         piaCompiler.buildIntermediateStructure();
 

@@ -10,4 +10,6 @@ public interface IReport extends Serializable {
 
     void addException(Exception e, ValidationMessage.Type code);
 
+    int getNumErrors();
+
 }

@@ -27,7 +27,7 @@ public class ResultReport extends Report {
 
     @Override
     public String toString() {
-        return super.toString() + "Number of reported proteins  -- " + numberOfProteins + "\n" +
+        return super.toString() + "\nIdentification results Report: \nNumber of reported proteins  -- " + numberOfProteins + "\n" +
                 "Number of reported peptides  -- " + numberOfPeptides + "\n" +
                 "Number of reported PSMs  -- " + numberOfPSMs + "\n";
     }

@@ -24,6 +24,11 @@ public class Report implements IReport{
     }
 
     @Override
+    public int getNumErrors() {
+        return errors.size();
+    }
+
+    @Override
     public String toString() {
         StringBuilder error = new StringBuilder();
         for(Map.Entry er: errors)
@@ -33,6 +38,8 @@ public class Report implements IReport{
         }
         return error.toString();
     }
+
+
 
 //  private String status = "";
 //  private String fileName = "";
