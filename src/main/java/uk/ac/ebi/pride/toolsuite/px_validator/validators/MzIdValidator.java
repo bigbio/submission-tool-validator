@@ -2,8 +2,10 @@ package uk.ac.ebi.pride.toolsuite.px_validator.validators;
 
 import de.mpc.pia.intermediate.compiler.PIASimpleCompiler;
 import de.mpc.pia.intermediate.compiler.parser.InputFileParserFactory;
+import de.mpc.pia.modeller.PIAModeller;
 import org.apache.commons.cli.CommandLine;
 import org.xml.sax.SAXException;
+import uk.ac.ebi.jmzidml.model.mzidml.SpectraData;
 import uk.ac.ebi.pride.data.validation.ValidationMessage;
 import uk.ac.ebi.pride.tools.ErrorHandlerIface;
 import uk.ac.ebi.pride.tools.GenericSchemaValidator;
@@ -13,11 +15,15 @@ import uk.ac.ebi.pride.toolsuite.px_validator.utils.*;
 import java.io.*;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class MzIdValidator implements Validator{
 
     private File file;
+    private List<File> peakFiles;
     private static final String MZID_SCHEMA = "https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/psi-pi/mzIdentML1.1.0.xsd";
 
     public static Validator getInstance(CommandLine cmd) throws Exception {
@@ -35,6 +41,7 @@ public class MzIdValidator implements Validator{
         }else{
             throw new IOException("In order to validate a mzid file the argument -mzid should be provided");
         }
+        peakFiles = uk.ac.ebi.pride.toolsuite.px_validator.Validator.getPeakFiles(cmd);
     }
 
     @Override
@@ -50,13 +57,23 @@ public class MzIdValidator implements Validator{
         piaCompiler.buildClusterList();
         piaCompiler.buildIntermediateStructure();
 
+        List<SpectraData> spectrumFiles = getPeakFiles(piaCompiler);
+        List<String> peakFilesError = validatePeakFiles(spectrumFiles);
+        if(peakFilesError.size() > 0){
+            for(String error: peakFilesError){
+                report.addException(new IOException(error), ValidationMessage.Type.ERROR);
+            }
+        }
+
         int numProteins = piaCompiler.getNrAccessions();
         int numPeptides = piaCompiler.getNrPeptides();
         int numPSMs = piaCompiler.getNrPeptideSpectrumMatches();
+        int numPeakFiles = spectrumFiles.size();
 
         ((ResultReport) report).setNumberOfPeptides(numPeptides);
         ((ResultReport) report).setNumberOfProteins(numProteins);
         ((ResultReport) report).setNumberOfPSMs(numPSMs);
+        ((ResultReport) report).setNumberOfPeakFiles(numPeakFiles);
         return report;
     }
 
@@ -76,5 +93,48 @@ public class MzIdValidator implements Validator{
             report.addException(e, ValidationMessage.Type.ERROR);
         }
         return report;
+  }
+
+  private List<SpectraData> getPeakFiles(PIASimpleCompiler piaCompiler){
+      PIAModeller piaModeller = null;
+      try {
+          if (piaCompiler.getAllPeptideSpectrumMatcheIDs() != null
+                  && !piaCompiler.getAllPeptideSpectrumMatcheIDs().isEmpty()) {
+              File inferenceTempFile = File.createTempFile("assay", ".tmp");
+              piaCompiler.writeOutXML(inferenceTempFile);
+              piaCompiler.finish();
+              piaModeller = new PIAModeller(inferenceTempFile.getAbsolutePath());
+
+              if (inferenceTempFile.exists()) {
+                  inferenceTempFile.deleteOnExit();
+              }
+          }
+      } catch (IOException e) {
+          e.printStackTrace();
+      }
+      piaModeller.getSpectraData();
+
+      return piaModeller.getSpectraData()
+              .entrySet().stream().map(Map.Entry::getValue)
+              .collect(Collectors.toList());
+  }
+
+  private List<String> validatePeakFiles(List<SpectraData> spectraDataFiles){
+      List<String> peakFileErrors = new ArrayList<>();
+
+      for(File peakFile: this.peakFiles){
+          boolean isFound = false;
+          for (SpectraData spectraData : spectraDataFiles) {
+              String filename = Utility.getRealFileName(spectraData.getLocation());
+              if(filename.equals(peakFile.getName())){
+                  isFound = true;
+                  break;
+              }
+          }
+          if(!isFound){
+              peakFileErrors.add(peakFile.getName() + " does not found as a reference in MzIdentML");
+          }
+      }
+      return peakFileErrors;
   }
 }
