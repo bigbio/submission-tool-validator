@@ -8,6 +8,7 @@ public class ResultReport extends Report {
     private int numberOfProteins;
     private int numberOfPeptides;
     private int numberOfPSMs;
+    private int numberOfPeakFiles;
 
     public ResultReport() {
 
@@ -25,10 +26,15 @@ public class ResultReport extends Report {
         this.numberOfPSMs = numberOfPSMs;
     }
 
+    public void setNumberOfPeakFiles(int numberOfPeakFiles) {
+        this.numberOfPeakFiles = numberOfPeakFiles;
+    }
+
     @Override
     public String toString() {
-        return super.toString() + "\nIdentification results Report: \nNumber of reported proteins  -- " + numberOfProteins + "\n" +
-                "Number of reported peptides  -- " + numberOfPeptides + "\n" +
-                "Number of reported PSMs  -- " + numberOfPSMs + "\n";
+        return super.toString() + "Number of reported proteins : " + numberOfProteins + "\n" +
+                "Number of reported peptides : " + numberOfPeptides + "\n" +
+                "Number of reported PSMs : " + numberOfPSMs + "\n" +
+                "Number of peak files : " + numberOfPeakFiles + "\n";
     }
 }

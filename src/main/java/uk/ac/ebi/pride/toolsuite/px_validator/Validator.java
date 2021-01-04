@@ -84,7 +84,7 @@ public class Validator {
    * @param cmd the command line arguments.
    * @return List of peak files.
    */
-  private static List<File> getPeakFiles(CommandLine cmd) {
+  public static List<File> getPeakFiles(CommandLine cmd) {
     List<File> peakFiles = new ArrayList<>();
     if (cmd.hasOption(ARG_PEAK) || cmd.hasOption(ARG_PEAKS)) {
       String[] peakFilesString = cmd.hasOption(ARG_PEAK) ? cmd.getOptionValues(ARG_PEAK)

@@ -4,6 +4,7 @@ import org.apache.commons.cli.*;
 import org.apache.log4j.Logger;
 import uk.ac.ebi.pride.toolsuite.px_validator.utils.IReport;
 
+import java.io.File;
 import java.util.*;
 
 import static uk.ac.ebi.pride.toolsuite.px_validator.utils.Utility.*;
@@ -30,8 +31,14 @@ public class SubmissionToolValidator {
       if (args.length > 0) {
         if (cmd.hasOption(ARG_VALIDATION)) {
           IReport report = Validator.startValidation(cmd);
-          if (report != null)
-            log.info(report.toString());
+          if (report != null) {
+            if(cmd.hasOption(ARG_REPORTFILE)){
+              File outputFile  = cmd.hasOption(ARG_REPORTFILE) ? new File(cmd.getOptionValue(ARG_REPORTFILE)) : null;
+              outputReport(report, outputFile);
+            }else {
+              log.info(report.toString());
+            }
+          }
         }  else {
           log.error("Did not find validation command from arguments ");
           Arrays.stream(args).forEach(log::error);

@@ -104,4 +104,29 @@ public class Utility {
     }
     return tempFile;
   }
+
+  public static void outputReport(IReport report, File reportFile){
+    log.info(report.toString());
+    if (reportFile!=null) {
+      try {
+        log.info("Writing report to: " + reportFile.getAbsolutePath());
+        java.nio.file.Files.write(reportFile.toPath(), report.toString().getBytes());
+      } catch (IOException ioe) {
+        log.error("Problem when writing report file: ", ioe);
+      }
+    }
+  }
+
+  public static String getRealFileName(String fileName) {
+    String name = fileName;
+
+    if (name.contains("/") || name.contains("\\")) {
+      String[] parts = name.split("/");
+      name = parts[parts.length - 1];
+      parts = name.split("\\\\");
+      name = parts[parts.length - 1];
+    }
+
+    return name;
+  }
 }
