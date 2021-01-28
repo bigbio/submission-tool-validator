@@ -70,10 +70,13 @@ public class MzIdValidator implements Validator{
         int numPSMs = piaCompiler.getNrPeptideSpectrumMatches();
         int numPeakFiles = spectrumFiles.size();
 
-        ((ResultReport) report).setNumberOfPeptides(numPeptides);
+        ((ResultReport) report).setAssayFile(file.getName());
+        ((ResultReport) report).setFileSize(file.getTotalSpace());
         ((ResultReport) report).setNumberOfProteins(numProteins);
+        ((ResultReport) report).setNumberOfPeptides(numPeptides);
         ((ResultReport) report).setNumberOfPSMs(numPSMs);
         ((ResultReport) report).setNumberOfPeakFiles(numPeakFiles);
+        ((ResultReport) report).setValidSchema(true);
         return report;
     }
 

@@ -34,7 +34,9 @@ public class Report implements IReport{
         for(Map.Entry er: errors)
             error.append(er.getKey().toString()).append(" == Level Error: ").append(er.getValue()).append(" ==\n");
         if(errors.isEmpty()){
-            error.append("Errors found: None").append("\n");
+            error.append("Status : Valid").append("\n");
+        }else{
+            error.append("Status : Invalid").append("\n");
         }
         return error.toString();
     }

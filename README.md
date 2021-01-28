@@ -33,6 +33,8 @@ Validation an mzIdentML
 
 ```
 $ java -jar submission-tool-validator-{version}-bin.jar -v -mzid /path/to/data/file.mzid
+$ java -jar submission-tool-validator-{version}-bin.jar -v -mzid /path/to/data/file.mzid -peak /path/to/data/file.mgf 
+$ java -jar submission-tool-validator-{version}-bin.jar -v -mzid /path/to/data/file.mzid -peaks /path/to/data/file1.mgf##/path/to/data/file2.mgf
 ```
 
 
