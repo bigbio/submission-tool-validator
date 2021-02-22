@@ -48,7 +48,7 @@ public class MzIdValidator implements Validator{
     public IReport validate() {
 
         IReport report = validateMzidSchema(file);
-        if(report.getNumErrors() > 0)
+        if (report.getNumErrors() > 0)
             return report;
 
         PIASimpleCompiler piaCompiler = new PIASimpleCompiler();
@@ -57,10 +57,12 @@ public class MzIdValidator implements Validator{
         piaCompiler.buildClusterList();
         piaCompiler.buildIntermediateStructure();
 
-        List<SpectraData> spectrumFiles = getPeakFiles(piaCompiler);
+        // check peak files are correctly referenced and tally with in SpectraData MzIdentML and the Submission.px
+        List<SpectraData> spectrumFiles = getSpectraDataMap(piaCompiler).entrySet().stream().map(Map.Entry::getValue)
+                .collect(Collectors.toList());
         List<String> peakFilesError = validatePeakFiles(spectrumFiles);
-        if(peakFilesError.size() > 0){
-            for(String error: peakFilesError){
+        if (peakFilesError.size() > 0) {
+            for (String error : peakFilesError) {
                 report.addException(new IOException(error), ValidationMessage.Type.ERROR);
             }
         }
@@ -71,7 +73,7 @@ public class MzIdValidator implements Validator{
         int numPeakFiles = spectrumFiles.size();
 
         ((ResultReport) report).setAssayFile(file.getName());
-        ((ResultReport) report).setFileSize(file.getTotalSpace());
+        ((ResultReport) report).setFileSize(file.length());
         ((ResultReport) report).setNumberOfProteins(numProteins);
         ((ResultReport) report).setNumberOfPeptides(numPeptides);
         ((ResultReport) report).setNumberOfPSMs(numPSMs);
@@ -98,38 +100,38 @@ public class MzIdValidator implements Validator{
         return report;
   }
 
-  private List<SpectraData> getPeakFiles(PIASimpleCompiler piaCompiler){
-      PIAModeller piaModeller = null;
-      try {
-          if (piaCompiler.getAllPeptideSpectrumMatcheIDs() != null
-                  && !piaCompiler.getAllPeptideSpectrumMatcheIDs().isEmpty()) {
-              File inferenceTempFile = File.createTempFile("assay", ".tmp");
-              piaCompiler.writeOutXML(inferenceTempFile);
-              piaCompiler.finish();
-              piaModeller = new PIAModeller(inferenceTempFile.getAbsolutePath());
 
-              if (inferenceTempFile.exists()) {
-                  inferenceTempFile.deleteOnExit();
-              }
-          }
-      } catch (IOException e) {
-          e.printStackTrace();
-      }
-      piaModeller.getSpectraData();
 
-      return piaModeller.getSpectraData()
-              .entrySet().stream().map(Map.Entry::getValue)
-              .collect(Collectors.toList());
-  }
+    private Map<String, SpectraData> getSpectraDataMap(PIASimpleCompiler piaCompiler){
+        PIAModeller piaModeller = null;
+        try {
+            if (piaCompiler.getAllPeptideSpectrumMatcheIDs() != null
+                    && !piaCompiler.getAllPeptideSpectrumMatcheIDs().isEmpty()) {
+                File inferenceTempFile = File.createTempFile("assay", ".tmp");
+                piaCompiler.writeOutXML(inferenceTempFile);
+                piaCompiler.finish();
+                piaModeller = new PIAModeller(inferenceTempFile.getAbsolutePath());
 
-  private List<String> validatePeakFiles(List<SpectraData> spectraDataFiles){
+                if (inferenceTempFile.exists()) {
+                    inferenceTempFile.deleteOnExit();
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return piaModeller.getSpectraData();
+
+    }
+
+
+    private List<String> validatePeakFiles(List<SpectraData> spectraDataFiles){
       List<String> peakFileErrors = new ArrayList<>();
 
       for(File peakFile: this.peakFiles){
           boolean isFound = false;
           for (SpectraData spectraData : spectraDataFiles) {
               String filename = Utility.getRealFileName(spectraData.getLocation());
-              if(filename.equals(peakFile.getName())){
+              if(filename.toLowerCase().equals(peakFile.getName().toLowerCase())){
                   isFound = true;
                   break;
               }
