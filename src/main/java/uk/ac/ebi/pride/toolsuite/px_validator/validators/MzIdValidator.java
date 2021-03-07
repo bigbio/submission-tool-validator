@@ -48,6 +48,8 @@ public class MzIdValidator implements Validator{
     public IReport validate() {
 
         IReport report = validateMzidSchema(file);
+        ((ResultReport) report).setAssayFile(file.getName());
+        ((ResultReport) report).setFileSize(file.length());
         if (report.getNumErrors() > 0)
             return report;
 
@@ -72,8 +74,6 @@ public class MzIdValidator implements Validator{
         int numPSMs = piaCompiler.getNrPeptideSpectrumMatches();
         int numPeakFiles = spectrumFiles.size();
 
-        ((ResultReport) report).setAssayFile(file.getName());
-        ((ResultReport) report).setFileSize(file.length());
         ((ResultReport) report).setNumberOfProteins(numProteins);
         ((ResultReport) report).setNumberOfPeptides(numPeptides);
         ((ResultReport) report).setNumberOfPSMs(numPSMs);
