@@ -15,6 +15,7 @@ import uk.ac.ebi.pride.toolsuite.px_validator.utils.*;
 import java.io.*;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -24,7 +25,7 @@ public class MzIdValidator implements Validator{
 
     private File file;
     private List<File> peakFiles;
-    private static final String MZID_SCHEMA = "https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/psi-pi/mzIdentML1.1.0.xsd";
+//    private static final String MZID_SCHEMA = "https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/psi-pi/mzIdentML1.1.0.xsd";
 
     public static Validator getInstance(CommandLine cmd) throws Exception {
         return new MzIdValidator(cmd);
@@ -86,7 +87,11 @@ public class MzIdValidator implements Validator{
         IReport report = new ResultReport();
         try (BufferedReader br = new BufferedReader(new FileReader(mzIdentML))) {
             GenericSchemaValidator genericValidator = new GenericSchemaValidator();
-            genericValidator.setSchema(new URI(MzIdValidator.MZID_SCHEMA));
+            URL url =  MzIdValidator.class.getClassLoader().getResource("mzIdentML1.1.0.xsd");
+            if (url == null || url.getPath().length() == 0) {
+                throw new IllegalStateException("MzIdentML1.1.0.xsd not found!");
+            }
+            genericValidator.setSchema(url.toURI());
             ErrorHandlerIface handler = new ValidationErrorHandler();
             genericValidator.setErrorHandler(handler);
             genericValidator.validate(br);
