@@ -4,7 +4,7 @@
     <groupId>uk.ac.ebi.pride.toolsuite</groupId>
     <artifactId>submission-tool-validator</artifactId>
     <name>submission-tool-validator</name>
-    <version>1.0.2</version>
+    <version>1.0.3</version>
     <packaging>jar</packaging>
 
 
@@ -178,6 +178,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-resources-plugin</artifactId>
+                <version>3.2.0</version>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
