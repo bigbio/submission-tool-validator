@@ -26,6 +26,10 @@ public class SubmissionToolValidator {
   public static void main(String[] args) {
     log.info("Starting application....");
     log.info("Program arguments: " + Arrays.toString(args));
+    log.info("\nFree Memory: " + (Runtime.getRuntime().freeMemory()/1024/1024) + "MB" +
+            "\nTotal Memory: " + (Runtime.getRuntime().totalMemory()/1024/1024) + "MB" +
+            "\nMax Heap Memory: " + (Runtime.getRuntime().maxMemory()/1024/1024) + "MB");
+
     try {
       CommandLine cmd = SubmissionToolValidator.parseArgs(args);
       if (args.length > 0) {
