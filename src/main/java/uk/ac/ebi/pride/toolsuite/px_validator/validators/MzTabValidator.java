@@ -9,16 +9,20 @@ import uk.ac.ebi.pride.jmztab.utils.MZTabFileParser;
 import uk.ac.ebi.pride.jmztab.utils.errors.MZTabError;
 import uk.ac.ebi.pride.jmztab.utils.errors.MZTabErrorType;
 import uk.ac.ebi.pride.toolsuite.px_validator.utils.IReport;
+import uk.ac.ebi.pride.toolsuite.px_validator.utils.PeakReport;
 import uk.ac.ebi.pride.toolsuite.px_validator.utils.ResultReport;
 import uk.ac.ebi.pride.toolsuite.px_validator.utils.Utility;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.List;
 
 public class MzTabValidator implements Validator{
 
     private File file;
+    private List<File> peakFilesFromCmdLine;
+//    PeakValidator peakValidator;
 
     public static Validator getInstance(CommandLine cmd) throws Exception {
         return new MzTabValidator(cmd);
@@ -35,6 +39,7 @@ public class MzTabValidator implements Validator{
         }else{
             throw new IOException("In order to validate a mztab file the argument -mztab should be provided");
         }
+        peakFilesFromCmdLine = uk.ac.ebi.pride.toolsuite.px_validator.Validator.getPeakFiles(cmd);
     }
 
     @Override
@@ -63,19 +68,25 @@ public class MzTabValidator implements Validator{
             piaCompiler.buildClusterList();
             piaCompiler.buildIntermediateStructure();
 
+//            peakValidator = new PeakValidator(piaCompiler,peakFilesFromCmdLine,report);
+//            List<PeakReport> peakReports = peakValidator.validate();
+
             int numProteins = piaCompiler.getNrAccessions();
             int numPeptides = piaCompiler.getNrPeptides();
             int numPSMs = piaCompiler.getNrPeptideSpectrumMatches();
+//            int numPeakFiles = peakReports.size();
 
-            report.setNumberOfPeptides(numPeptides);
-            report.setNumberOfProteins(numProteins);
-            report.setNumberOfPSMs(numPSMs);
-
-
+            ((ResultReport) report).setAssayFile(file.getName());
+            ((ResultReport) report).setFileSize(file.length());
+            ((ResultReport) report).setNumberOfPeptides(numPeptides);
+            ((ResultReport) report).setNumberOfProteins(numProteins);
+            ((ResultReport) report).setNumberOfPSMs(numPSMs);
+//            ((ResultReport) report).setNumberOfPeakFiles(numPeakFiles);
+//            ((ResultReport) report).setPeakReports(peakReports);
+            ((ResultReport) report).setValidSchema(true);
 
         } catch (IOException e) {
             report.addException(e, ValidationMessage.Type.ERROR);
-
         }
         return report;
     }

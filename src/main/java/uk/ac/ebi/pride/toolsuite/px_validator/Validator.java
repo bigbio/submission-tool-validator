@@ -41,14 +41,14 @@ public class Validator {
         e.printStackTrace();
       }
 
-    } if(cmd.hasOption(ARG_MZTAB)){
+    } else if(cmd.hasOption(ARG_MZTAB)){
       try {
         uk.ac.ebi.pride.toolsuite.px_validator.validators.Validator validator = MzTabValidator.getInstance(cmd);
         report = validator.validate();
       } catch (Exception e) {
         e.printStackTrace();
       }
-    } if(cmd.hasOption(ARG_MZID)){
+    } else if(cmd.hasOption(ARG_MZID)){
       try {
         uk.ac.ebi.pride.toolsuite.px_validator.validators.Validator validator = MzIdValidator.getInstance(cmd);
         report = validator.validate();

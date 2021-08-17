@@ -2,30 +2,30 @@ package uk.ac.ebi.pride.toolsuite.px_validator.validators;
 
 import de.mpc.pia.intermediate.compiler.PIASimpleCompiler;
 import de.mpc.pia.intermediate.compiler.parser.InputFileParserFactory;
-import de.mpc.pia.modeller.PIAModeller;
 import org.apache.commons.cli.CommandLine;
 import org.xml.sax.SAXException;
-import uk.ac.ebi.jmzidml.model.mzidml.SpectraData;
 import uk.ac.ebi.pride.data.validation.ValidationMessage;
 import uk.ac.ebi.pride.tools.ErrorHandlerIface;
 import uk.ac.ebi.pride.tools.GenericSchemaValidator;
 import uk.ac.ebi.pride.tools.ValidationErrorHandler;
-import uk.ac.ebi.pride.toolsuite.px_validator.utils.*;
+import uk.ac.ebi.pride.toolsuite.px_validator.utils.IReport;
+import uk.ac.ebi.pride.toolsuite.px_validator.utils.PeakReport;
+import uk.ac.ebi.pride.toolsuite.px_validator.utils.ResultReport;
+import uk.ac.ebi.pride.toolsuite.px_validator.utils.Utility;
 
-import java.io.*;
-import java.net.URI;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 public class MzIdValidator implements Validator{
 
-    private File file;
-    private List<File> peakFiles;
-//    private static final String MZID_SCHEMA = "https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/psi-pi/mzIdentML1.1.0.xsd";
+    final private File file;
+    private List<File> peakFilesFromCmdLine;
+    PeakValidator peakValidator;
 
     public static Validator getInstance(CommandLine cmd) throws Exception {
         return new MzIdValidator(cmd);
@@ -42,7 +42,7 @@ public class MzIdValidator implements Validator{
         }else{
             throw new IOException("In order to validate a mzid file the argument -mzid should be provided");
         }
-        peakFiles = uk.ac.ebi.pride.toolsuite.px_validator.Validator.getPeakFiles(cmd);
+        peakFilesFromCmdLine = uk.ac.ebi.pride.toolsuite.px_validator.Validator.getPeakFiles(cmd);
     }
 
     @Override
@@ -60,25 +60,21 @@ public class MzIdValidator implements Validator{
         piaCompiler.buildClusterList();
         piaCompiler.buildIntermediateStructure();
 
-        // check peak files are correctly referenced and tally with in SpectraData MzIdentML and the Submission.px
-        List<SpectraData> spectrumFiles = getSpectraDataMap(piaCompiler).entrySet().stream().map(Map.Entry::getValue)
-                .collect(Collectors.toList());
-        List<String> peakFilesError = validatePeakFiles(spectrumFiles);
-        if (peakFilesError.size() > 0) {
-            for (String error : peakFilesError) {
-                report.addException(new IOException(error), ValidationMessage.Type.ERROR);
-            }
-        }
+        peakValidator = new PeakValidator(piaCompiler,peakFilesFromCmdLine,report);
+        List<PeakReport> peakReports = peakValidator.validate();
 
         int numProteins = piaCompiler.getNrAccessions();
         int numPeptides = piaCompiler.getNrPeptides();
         int numPSMs = piaCompiler.getNrPeptideSpectrumMatches();
-        int numPeakFiles = spectrumFiles.size();
+        int numPeakFiles = peakReports.size();
 
+        ((ResultReport) report).setAssayFile(file.getName());
+        ((ResultReport) report).setFileSize(file.length());
         ((ResultReport) report).setNumberOfProteins(numProteins);
         ((ResultReport) report).setNumberOfPeptides(numPeptides);
         ((ResultReport) report).setNumberOfPSMs(numPSMs);
         ((ResultReport) report).setNumberOfPeakFiles(numPeakFiles);
+        ((ResultReport) report).setPeakReports(peakReports);
         ((ResultReport) report).setValidSchema(true);
         return report;
     }
@@ -103,48 +99,5 @@ public class MzIdValidator implements Validator{
             report.addException(e, ValidationMessage.Type.ERROR);
         }
         return report;
-  }
-
-
-
-    private Map<String, SpectraData> getSpectraDataMap(PIASimpleCompiler piaCompiler){
-        PIAModeller piaModeller = null;
-        try {
-            if (piaCompiler.getAllPeptideSpectrumMatcheIDs() != null
-                    && !piaCompiler.getAllPeptideSpectrumMatcheIDs().isEmpty()) {
-                File inferenceTempFile = File.createTempFile("assay", ".tmp");
-                piaCompiler.writeOutXML(inferenceTempFile);
-                piaCompiler.finish();
-                piaModeller = new PIAModeller(inferenceTempFile.getAbsolutePath());
-
-                if (inferenceTempFile.exists()) {
-                    inferenceTempFile.deleteOnExit();
-                }
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return piaModeller.getSpectraData();
-
-    }
-
-
-    private List<String> validatePeakFiles(List<SpectraData> spectraDataFiles){
-      List<String> peakFileErrors = new ArrayList<>();
-
-      for(File peakFile: this.peakFiles){
-          boolean isFound = false;
-          for (SpectraData spectraData : spectraDataFiles) {
-              String filename = Utility.getRealFileName(spectraData.getLocation());
-              if(filename.toLowerCase().equals(peakFile.getName().toLowerCase())){
-                  isFound = true;
-                  break;
-              }
-          }
-          if(!isFound){
-              peakFileErrors.add(peakFile.getName() + " does not found as a reference in MzIdentML");
-          }
-      }
-      return peakFileErrors;
   }
 }
