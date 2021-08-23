@@ -164,11 +164,6 @@ public class Utility {
           spectraFileMap.add(new Triple<>(buildPath + file, spectraData,
                   Utility.FileType.getFileTypeFromSpectraData(spectraData)));
         }
-//        else if (file.contains(spectraData.getId())
-//                || (spectraData.getName() != null && file.toLowerCase().contains(spectraData.getName().toLowerCase()))) {
-//          spectraFileMap.add(new Triple<>(buildPath + file, spectraData, Utility
-//                  .FileType.getFileTypeFromSpectraData(spectraData)));
-//        }
       }
     }
     return spectraFileMap;

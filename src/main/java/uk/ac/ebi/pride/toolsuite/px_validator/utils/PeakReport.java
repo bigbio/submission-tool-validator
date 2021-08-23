@@ -11,6 +11,9 @@ import java.util.List;
 /**
  * @author Suresh Hewapathirana
  */
+@Getter
+@Setter
+@NoArgsConstructor
 public class PeakReport extends Report{
 
     private String peakFile;
@@ -18,49 +21,6 @@ public class PeakReport extends Report{
     private int numberOfPeaks;
     private List<PeptideSpectrumMatch> detectedPsms = new ArrayList<>();
     private List<PeptideSpectrumMatch> undetectedPsms = new ArrayList<>();
-
-    public String getPeakFile() {
-        return peakFile;
-    }
-
-    public void setPeakFile(String peakFile) {
-        this.peakFile = peakFile;
-    }
-
-    public long getFileSize() {
-        return fileSize;
-    }
-
-    public void setFileSize(long fileSize) {
-        this.fileSize = fileSize;
-    }
-
-    public int getNumberOfPeaks() {
-        return numberOfPeaks;
-    }
-
-    public void setNumberOfPeaks(int numberOfPeaks) {
-        this.numberOfPeaks = numberOfPeaks;
-    }
-
-    public List<PeptideSpectrumMatch> getDetectedPsms() {
-        return detectedPsms;
-    }
-
-    public void setDetectedPsms(List<PeptideSpectrumMatch> detectedPsms) {
-        this.detectedPsms = detectedPsms;
-    }
-
-    public List<PeptideSpectrumMatch> getUndetectedPsms() {
-        return undetectedPsms;
-    }
-
-    public void setUndetectedPsms(List<PeptideSpectrumMatch> undetectedPsms) {
-        this.undetectedPsms = undetectedPsms;
-    }
-
-    public PeakReport() {
-    }
 
     @Override
     public String toString() {

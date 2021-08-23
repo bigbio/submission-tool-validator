@@ -25,7 +25,7 @@ public class JmzReaderSpectrumService {
     /**
      * Map of all readers containing the spectra
      */
-    Map<String, JMzReader> readers = new HashMap<>();
+    Map<String, JMzReader> readers;
 
     /**
      * Based on the file type of the peak file, get the correct reader to parse the peak file
