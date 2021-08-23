@@ -22,7 +22,7 @@ public class MzTabValidator implements Validator{
 
     private File file;
     private List<File> peakFilesFromCmdLine;
-//    PeakValidator peakValidator;
+    boolean isPeakValidationSkipped = false;
 
     public static Validator getInstance(CommandLine cmd) throws Exception {
         return new MzTabValidator(cmd);
@@ -35,6 +35,9 @@ public class MzTabValidator implements Validator{
             if (!file.exists()){
                 throw new IOException("The provided file name can't be found -- "
                         + cmd.getOptionValue(Utility.ARG_MZTAB));
+            }
+            if(cmd.hasOption(Utility.ARG_SKIP_PEAK_VAL)){
+                isPeakValidationSkipped = true;
             }
         }else{
             throw new IOException("In order to validate a mztab file the argument -mztab should be provided");
@@ -68,23 +71,24 @@ public class MzTabValidator implements Validator{
             piaCompiler.buildClusterList();
             piaCompiler.buildIntermediateStructure();
 
-//            peakValidator = new PeakValidator(piaCompiler,peakFilesFromCmdLine,report);
-//            List<PeakReport> peakReports = peakValidator.validate();
-
             int numProteins = piaCompiler.getNrAccessions();
             int numPeptides = piaCompiler.getNrPeptides();
             int numPSMs = piaCompiler.getNrPeptideSpectrumMatches();
-//            int numPeakFiles = peakReports.size();
 
-            ((ResultReport) report).setAssayFile(file.getName());
-            ((ResultReport) report).setFileSize(file.length());
-            ((ResultReport) report).setNumberOfPeptides(numPeptides);
-            ((ResultReport) report).setNumberOfProteins(numProteins);
-            ((ResultReport) report).setNumberOfPSMs(numPSMs);
-//            ((ResultReport) report).setNumberOfPeakFiles(numPeakFiles);
-//            ((ResultReport) report).setPeakReports(peakReports);
-            ((ResultReport) report).setValidSchema(true);
+            report.setAssayFile(file.getName());
+            (report).setFileSize(file.length());
+            (report).setNumberOfPeptides(numPeptides);
+            (report).setNumberOfProteins(numProteins);
+            (report).setNumberOfPSMs(numPSMs);
+            (report).setValidSchema(true);
 
+            if(!isPeakValidationSkipped) {
+                PeakValidator peakValidator = new PeakValidator(piaCompiler, peakFilesFromCmdLine, report);
+                List<PeakReport> peakReports = peakValidator.validate();
+                int numPeakFiles = peakReports.size();
+                ((ResultReport) report).setNumberOfPeakFiles(numPeakFiles);
+                ((ResultReport) report).setPeakReports(peakReports);
+            }
         } catch (IOException e) {
             report.addException(e, ValidationMessage.Type.ERROR);
         }

@@ -80,7 +80,6 @@ public class PeakValidator {
         Spectrum fileSpectrum = null;
         String spectrumFile;
 
-
         // check if the selected PSMs are exits in the Spectra File
         if(service != null){
             for (Map.Entry<String, List<PeptideSpectrumMatch>> psmEntry : selectedPsmBySpectaDataRef.entrySet()) {

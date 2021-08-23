@@ -10,7 +10,7 @@ import java.util.*;
 import static uk.ac.ebi.pride.toolsuite.px_validator.utils.Utility.*;
 
 /**
- * This is the main class for the tool, which parses cmmand line arguments and starts the approoriate operation of either convering to validating files.
+ * This is the main class for the tool, which parses command line arguments and starts the appropriate operation of either converting to validating files.
  *
  * @author ypriverol
  */
@@ -68,6 +68,7 @@ public class SubmissionToolValidator {
     options.addOption(ARG_MZID, true, "mzid file");
     options.addOption(ARG_PEAK, true, "peak file");
     options.addOption(ARG_PEAKS, true, "peak files");
+    options.addOption(ARG_SKIP_PEAK_VAL, false, "skip peak file validations");
     options.addOption(ARG_MZTAB, true, "mztab file");
     options.addOption(ARG_OUTPUTFILE, true, "exact output file");
     options.addOption(ARG_OUTPUTTFORMAT, true, "exact output file format");

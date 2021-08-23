@@ -24,6 +24,7 @@ public class Utility {
   public static final String ARG_PXFILE = "px";
   public static final String ARG_PEAK = "peak";
   public static final String ARG_PEAKS = "peaks";
+  public static final String ARG_SKIP_PEAK_VAL = "skippeakval";
   public static final String ARG_MZTAB = "mztab";
   public static final String ARG_OUTPUTFILE = "outputfile";
   public static final String ARG_INPUTFILE = "inputfile";
