@@ -30,6 +30,7 @@ public class Validator {
    * This class parses the command line arguments and beings the file validation.
    *
    * @param cmd command line arguments.
+   * @return IReport
    */
   public static IReport startValidation(CommandLine cmd) {
     IReport report = null;

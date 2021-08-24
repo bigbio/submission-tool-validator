@@ -35,7 +35,7 @@ public class PeakValidator {
     /**
      * Validate the Peak files by checking the reference from assay to peak files
      * and check the spectra are matching from the original peak file
-     * @return
+     * @return list of peak reports
      */
     public  List<PeakReport> validate(){
 

@@ -64,8 +64,9 @@ public class JmzReaderSpectrumService {
      * Return an instance that allow to read the spectra from the original file.
      *
      * @param spectrumFileList spectrum File List
-     * @return JmzReader Spectrum Service
+     * @return JmzReaderSpectrumService JmzReader Spectrum Service
      * @throws JMzReaderException JMzReader Exception
+     * @throws MzXMLParsingException MzXMLParsingException Exception
      */
     public static JmzReaderSpectrumService getInstance(List<Triple<String, SpectraData, Utility.FileType>> spectrumFileList) throws JMzReaderException, MzXMLParsingException {
         return new JmzReaderSpectrumService(spectrumFileList);
