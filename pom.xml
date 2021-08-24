@@ -7,56 +7,44 @@
     <version>1.0.4</version>
     <packaging>jar</packaging>
 
-
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <archive.repo.version>1.0.2</archive.repo.version>
         <px.submission.core.version>2.0.28</px.submission.core.version>
         <javax.activation.version>1.2.0</javax.activation.version>
         <jaxb.api.version>2.3.1</jaxb.api.version>
-        <pia.version>1.3.15</pia.version>
-        <cpdetector>1.0.7</cpdetector>
+        <pia.version>1.3.18</pia.version>
+        <uk.ac.ebi.pride.tools-jmzreader.version>2.0.6</uk.ac.ebi.pride.tools-jmzreader.version>
+        <cpdetector.version>1.0.7</cpdetector.version>
     </properties>
 
     <dependencies>
         <dependency>
             <groupId>cpdetector</groupId>
             <artifactId>cpdetector</artifactId>
-            <version>${cpdetector}</version>
+            <version>${cpdetector.version}</version>
         </dependency>
         <dependency>
-            <groupId>de.mpc.pia</groupId>
+            <groupId>io.github.bigbio.external</groupId>
             <artifactId>pia</artifactId>
             <version>${pia.version}</version>
             <exclusions>
-                <exclusion>
-                    <groupId>org.slf4j</groupId>
-                    <artifactId>slf4j-api</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>ch.qos.logback</groupId>
-                    <artifactId>logback-core</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>ch.qos.logback</groupId>
-                    <artifactId>logback-classic</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.slf4j</groupId>
-                    <artifactId>slf4j-log4j12</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>javax.xml.bind</groupId>
-                    <artifactId>jaxb-api</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>com.sun.xml.bind</groupId>
-                    <artifactId>jaxb-core</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>com.sun.xml.bind</groupId>
-                    <artifactId>jaxb-xjc</artifactId>
-                </exclusion>
+<!--                <exclusion>-->
+<!--                    <groupId>org.slf4j</groupId>-->
+<!--                    <artifactId>slf4j-api</artifactId>-->
+<!--                </exclusion>-->
+<!--                <exclusion>-->
+<!--                    <groupId>ch.qos.logback</groupId>-->
+<!--                    <artifactId>logback-core</artifactId>-->
+<!--                </exclusion>-->
+<!--                <exclusion>-->
+<!--                    <groupId>ch.qos.logback</groupId>-->
+<!--                    <artifactId>logback-classic</artifactId>-->
+<!--                </exclusion>-->
+<!--                <exclusion>-->
+<!--                    <groupId>org.slf4j</groupId>-->
+<!--                    <artifactId>slf4j-log4j12</artifactId>-->
+<!--                </exclusion>-->
                 <!--           exclude this as this fails to download from maven a lot. Instead include it separately-->
                 <exclusion>
                     <groupId>net.sourceforge.cpdetector</groupId>
@@ -120,29 +108,36 @@
             <artifactId>xercesImpl</artifactId>
             <version>2.12.0</version>
         </dependency>
-
-        <!-- Java 11 comatibility -->
         <dependency>
-            <groupId>com.sun.activation</groupId>
-            <artifactId>javax.activation</artifactId>
-            <version>${javax.activation.version}</version>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.20</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>javax.xml.bind</groupId>
-            <artifactId>jaxb-api</artifactId>
-            <version>${jaxb.api.version}</version>
+            <groupId>uk.ac.ebi.pride.tools</groupId>
+            <artifactId>jmzreader</artifactId>
+            <version>${uk.ac.ebi.pride.tools-jmzreader.version}</version>
+            <exclusions>
+                <!--  exclude this as this fails to download from maven a lot. Instead include it separately-->
+                <exclusion>
+                    <groupId>net.sourceforge.cpdetector</groupId>
+                    <artifactId>cpdetector</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
-
+        <!-- Java 11 compatibilities -->
+        <!-- API, java.xml.bind module -->
         <dependency>
-            <groupId>com.sun.xml.bind</groupId>
-            <artifactId>jaxb-core</artifactId>
-            <version>2.3.0</version>
+            <groupId>jakarta.xml.bind</groupId>
+            <artifactId>jakarta.xml.bind-api</artifactId>
+            <version>2.3.2</version>
         </dependency>
-
+        <!-- Runtime, com.sun.xml.bind module -->
         <dependency>
-            <groupId>com.sun.xml.bind</groupId>
-            <artifactId>jaxb-impl</artifactId>
-            <version>${jaxb.api.version}</version>
+            <groupId>org.glassfish.jaxb</groupId>
+            <artifactId>jaxb-runtime</artifactId>
+            <version>2.3.2</version>
         </dependency>
     </dependencies>
 
@@ -204,16 +199,25 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.3</version>
+                <version>3.7.0</version>
                 <configuration>
                     <source>1.8</source>
                     <target>1.8</target>
                     <showDeprecation>true</showDeprecation>
                     <compilerArgument>-Xlint:unchecked</compilerArgument>
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                            <version>1.18.20</version>
+                        </path>
+                    </annotationProcessorPaths>
                 </configuration>
             </plugin>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-assembly-plugin</artifactId>
+                <version>3.3.0</version>
                 <configuration>
                     <descriptorRefs>
                         <descriptorRef>jar-with-dependencies</descriptorRef>
@@ -269,6 +273,7 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>2.19.1</version>
             </plugin>
+
         </plugins>
     </build>
 
