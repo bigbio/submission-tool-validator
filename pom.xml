@@ -280,11 +280,11 @@
     <repositories>
         <repository>
             <id>nexus-ebi-release-repo</id>
-            <url>http://www.ebi.ac.uk/Tools/maven/repos/content/groups/ebi-repo/</url>
+            <url>https://www.ebi.ac.uk/Tools/maven/repos/content/groups/ebi-repo/</url>
         </repository>
         <repository>
             <id>nexus-ebi-snapshot-repo</id>
-            <url>http://www.ebi.ac.uk/Tools/maven/repos/content/groups/ebi-snapshots/</url>
+            <url>https://www.ebi.ac.uk/Tools/maven/repos/content/groups/ebi-snapshots/</url>
         </repository>
         <repository>
             <id>nexus-ebi-intact-repo</id>
@@ -297,20 +297,32 @@
             <url>http://genesis.ugent.be/maven2</url>
             <layout>default</layout>
         </repository>
+        <!-- EBI repo -->
         <repository>
             <id>pst-release</id>
             <name>EBI Nexus Repository</name>
-            <url>http://www.ebi.ac.uk/Tools/maven/repos/content/repositories/pst-release</url>
+            <url>https://www.ebi.ac.uk/Tools/maven/repos/content/repositories/pst-release</url>
         </repository>
+        <!-- EBI SNAPSHOT repo -->
         <repository>
             <id>pst-snapshots</id>
             <name>EBI Nexus Snapshots Repository</name>
-            <url>http://www.ebi.ac.uk/Tools/maven/repos/content/repositories/pst-snapshots</url>
+            <url>https://www.ebi.ac.uk/Tools/maven/repos/content/repositories/pst-snapshots</url>
+        </repository>
+        <repository>
+            <id>sonatype-release</id>
+            <name>Central Repository OSSRH</name>
+            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
+        </repository>
+        <repository>
+            <id>sonatype-snapshopt</id>
+            <name>Central Repository OSSRH</name>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
         </repository>
         <repository>
             <id>redhat</id>
             <name>redhat</name>
-            <url>http://maven.repository.redhat.com/earlyaccess/all/</url>
+            <url>http://maven.repository.redhat.com/ea  rlyaccess/all/</url>
         </repository>
     </repositories>
 </project>
