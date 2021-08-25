@@ -290,13 +290,6 @@
             <id>nexus-ebi-intact-repo</id>
             <url>https://www.ebi.ac.uk/intact/maven/nexus/content/repositories/ebi-repo/</url>
         </repository>
-        <!-- UGent Genesis repository -->
-        <repository>
-            <id>genesis-maven2-repository</id>
-            <name>Genesis maven2 repository</name>
-            <url>http://genesis.ugent.be/maven2</url>
-            <layout>default</layout>
-        </repository>
         <!-- EBI repo -->
         <repository>
             <id>pst-release</id>
@@ -322,7 +315,7 @@
         <repository>
             <id>redhat</id>
             <name>redhat</name>
-            <url>http://maven.repository.redhat.com/ea  rlyaccess/all/</url>
+            <url>https://maven.repository.redhat.com/earlyaccess/all/</url>
         </repository>
     </repositories>
 </project>
