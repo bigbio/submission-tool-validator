@@ -16,6 +16,7 @@ import uk.ac.ebi.pride.tools.pride_wrapper.PRIDEXmlWrapper;
 import uk.ac.ebi.pride.utilities.util.Triple;
 
 import java.io.File;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -37,7 +38,7 @@ public class JmzReaderSpectrumService {
     private JmzReaderSpectrumService(List<Triple<String, SpectraData, Utility.FileType>> spectrumFileList) throws JMzReaderException, MzXMLParsingException {
         this.readers = new HashMap<>();
         for (Triple<String, SpectraData, Utility.FileType> entry : spectrumFileList) {
-            String key = FilenameUtils.getName((String) entry.getFirst());
+            String key = Paths.get(entry.getFirst()).toString();
             Utility.FileType value = entry.getThird();
 
             if (value == Utility.FileType.MGF) {
