@@ -16,6 +16,7 @@ import uk.ac.ebi.pride.utilities.util.Triple;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Paths;
 import java.text.DecimalFormat;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -97,7 +98,7 @@ public class PeakValidator {
                     }
                 }
                 if(currentSpectra.size() == 1){
-                    spectrumFile = FilenameUtils.getName(currentSpectra.get(0).getFirst());
+                    spectrumFile =  Paths.get(currentSpectra.get(0).getFirst()).toString();
                     Utility.SpecIdFormat fileIdFormat = Utility.getSpectraDataIdFormat(currentSpectra.get(0).getSecond().getSpectrumIDFormat().getCvParam().getAccession());
 
                     File file =  new File(spectrumFile);
