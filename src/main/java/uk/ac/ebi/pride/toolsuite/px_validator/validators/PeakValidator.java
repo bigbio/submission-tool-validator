@@ -4,6 +4,7 @@ package uk.ac.ebi.pride.toolsuite.px_validator.validators;
 import de.mpc.pia.intermediate.PeptideSpectrumMatch;
 import de.mpc.pia.intermediate.compiler.PIASimpleCompiler;
 import de.mpc.pia.modeller.PIAModeller;
+import org.apache.commons.io.FilenameUtils;
 import uk.ac.ebi.jmzidml.model.mzidml.CvParam;
 import uk.ac.ebi.jmzidml.model.mzidml.SpectraData;
 import uk.ac.ebi.pride.data.validation.ValidationMessage;
@@ -96,7 +97,7 @@ public class PeakValidator {
                     }
                 }
                 if(currentSpectra.size() == 1){
-                    spectrumFile = currentSpectra.get(0).getFirst();
+                    spectrumFile = FilenameUtils.getName(currentSpectra.get(0).getFirst());
                     Utility.SpecIdFormat fileIdFormat = Utility.getSpectraDataIdFormat(currentSpectra.get(0).getSecond().getSpectrumIDFormat().getCvParam().getAccession());
 
                     File file =  new File(spectrumFile);
@@ -212,6 +213,7 @@ public class PeakValidator {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        assert piaModeller != null;
         return piaModeller.getSpectraData();
     }
 

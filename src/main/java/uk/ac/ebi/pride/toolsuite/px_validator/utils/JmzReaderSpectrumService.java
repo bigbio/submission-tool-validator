@@ -1,6 +1,7 @@
 package uk.ac.ebi.pride.toolsuite.px_validator.utils;
 
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.io.FilenameUtils;
 import uk.ac.ebi.jmzidml.model.mzidml.SpectraData;
 import uk.ac.ebi.pride.tools.jmzreader.JMzReader;
 import uk.ac.ebi.pride.tools.jmzreader.JMzReaderException;
@@ -36,7 +37,7 @@ public class JmzReaderSpectrumService {
     private JmzReaderSpectrumService(List<Triple<String, SpectraData, Utility.FileType>> spectrumFileList) throws JMzReaderException, MzXMLParsingException {
         this.readers = new HashMap<>();
         for (Triple<String, SpectraData, Utility.FileType> entry : spectrumFileList) {
-            String key = (String) entry.getFirst();
+            String key = FilenameUtils.getName((String) entry.getFirst());
             Utility.FileType value = entry.getThird();
 
             if (value == Utility.FileType.MGF) {
