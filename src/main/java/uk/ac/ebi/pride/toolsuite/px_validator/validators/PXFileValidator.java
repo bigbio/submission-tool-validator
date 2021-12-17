@@ -2,6 +2,7 @@ package uk.ac.ebi.pride.toolsuite.px_validator.validators;
 
 import org.apache.commons.cli.CommandLine;
 import uk.ac.ebi.pride.data.exception.SubmissionFileException;
+
 import uk.ac.ebi.pride.data.io.SubmissionFileParser;
 import uk.ac.ebi.pride.data.model.Submission;
 import uk.ac.ebi.pride.data.validation.SubmissionValidator;
@@ -44,8 +45,7 @@ public class PXFileValidator implements Validator {
             for(ValidationMessage message: submissionValidator.getMessages()){
                 report.addException(new IOException(message.getMessage()), message.getType());
             }
-
-        } catch (SubmissionFileException e) {
+        } catch (SubmissionFileException | IOException e) {
             report.addException(e, ValidationMessage.Type.ERROR);
 
         }
