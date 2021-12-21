@@ -20,7 +20,7 @@
 
     <dependencies>
         <dependency>
-            <groupId>cpdetector</groupId>
+            <groupId>net.sourceforge.cpdetector</groupId>
             <artifactId>cpdetector</artifactId>
             <version>${cpdetector.version}</version>
         </dependency>

@@ -1,7 +1,7 @@
 package uk.ac.ebi.pride.toolsuite.px_validator;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.cli.*;
-import org.apache.log4j.Logger;
 import uk.ac.ebi.pride.toolsuite.px_validator.utils.IReport;
 
 import java.io.File;
@@ -14,9 +14,9 @@ import static uk.ac.ebi.pride.toolsuite.px_validator.utils.Utility.*;
  *
  * @author ypriverol
  */
+@Slf4j
 public class SubmissionToolValidator {
 
-  private static final Logger log = Logger.getLogger(SubmissionToolValidator.class);
 
   /**
    * Main class that gets run. Parses command line arguments, starts either the converter or validation operations.

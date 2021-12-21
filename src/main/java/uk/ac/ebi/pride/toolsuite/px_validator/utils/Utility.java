@@ -2,8 +2,8 @@ package uk.ac.ebi.pride.toolsuite.px_validator.utils;
 
 import com.google.common.io.Files;
 import de.mpc.pia.intermediate.PeptideSpectrumMatch;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
-import org.apache.log4j.Logger;
 import uk.ac.ebi.jmzidml.model.mzidml.FileFormat;
 import uk.ac.ebi.jmzidml.model.mzidml.SpectraData;
 import uk.ac.ebi.pride.utilities.util.Triple;
@@ -15,8 +15,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+@Slf4j
 public class Utility {
-  private static final Logger log = Logger.getLogger(Utility.class);
 
   public static final String ARG_VALIDATION = "v";
   public static final String ARG_CONVERSION = "c";

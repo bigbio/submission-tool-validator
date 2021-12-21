@@ -1,8 +1,8 @@
 package uk.ac.ebi.pride.toolsuite.px_validator;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.cli.CommandLine;
 
-import org.apache.log4j.Logger;
 import uk.ac.ebi.pride.toolsuite.px_validator.utils.*;
 import uk.ac.ebi.pride.toolsuite.px_validator.validators.MzIdValidator;
 import uk.ac.ebi.pride.toolsuite.px_validator.validators.MzTabValidator;
@@ -21,9 +21,8 @@ import static uk.ac.ebi.pride.toolsuite.px_validator.utils.Utility.*;
  *
  * @author ypriverol
  */
+@Slf4j
 public class Validator {
-
-  private static final Logger log = Logger.getLogger(Validator.class);
 
 
   /**
