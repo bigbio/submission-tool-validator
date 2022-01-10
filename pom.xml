@@ -4,7 +4,7 @@
     <groupId>uk.ac.ebi.pride.toolsuite</groupId>
     <artifactId>submission-tool-validator</artifactId>
     <name>submission-tool-validator</name>
-    <version>1.0.6</version>
+    <version>1.0.7</version>
     <packaging>jar</packaging>
 
     <properties>
