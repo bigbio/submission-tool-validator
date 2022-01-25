@@ -16,6 +16,7 @@
         <pia.version>1.3.23</pia.version>
         <uk.ac.ebi.pride.tools-jmzreader.version>2.0.6</uk.ac.ebi.pride.tools-jmzreader.version>
         <cpdetector.version>1.0.7</cpdetector.version>
+        <slf4j.version>1.7.33</slf4j.version>
     </properties>
 
     <dependencies>
@@ -23,6 +24,16 @@
             <groupId>net.sourceforge.cpdetector</groupId>
             <artifactId>cpdetector</artifactId>
             <version>${cpdetector.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${slf4j.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+            <version>${slf4j.version}</version>
         </dependency>
         <dependency>
             <groupId>io.github.bigbio.external</groupId>
