@@ -4,7 +4,7 @@
     <groupId>uk.ac.ebi.pride.toolsuite</groupId>
     <artifactId>submission-tool-validator</artifactId>
     <name>submission-tool-validator</name>
-    <version>1.0.7</version>
+    <version>1.0.8</version>
     <packaging>jar</packaging>
 
     <properties>
@@ -13,7 +13,7 @@
         <px.submission.core.version>2.0.32</px.submission.core.version>
         <javax.activation.version>1.2.0</javax.activation.version>
         <jaxb.api.version>2.3.1</jaxb.api.version>
-        <pia.version>1.3.23</pia.version>
+        <pia.version>1.3.26-SNAPSHOT</pia.version>
         <uk.ac.ebi.pride.tools-jmzreader.version>2.0.6</uk.ac.ebi.pride.tools-jmzreader.version>
         <cpdetector.version>1.0.7</cpdetector.version>
         <slf4j.version>1.7.33</slf4j.version>
@@ -36,7 +36,7 @@
             <version>${slf4j.version}</version>
         </dependency>
         <dependency>
-            <groupId>io.github.bigbio.external</groupId>
+            <groupId>uk.ac.ebi.pride.utilities</groupId>
             <artifactId>pia</artifactId>
             <version>${pia.version}</version>
             <exclusions>

@@ -86,23 +86,23 @@ public class MzIdValidator implements Validator{
 
     private static IReport validateMzidSchema(File mzIdentML) {
         IReport report = new ResultReport();
-        try (BufferedReader br = new BufferedReader(new FileReader(mzIdentML))) {
-            GenericSchemaValidator genericValidator = new GenericSchemaValidator();
-            URL url =  MzIdValidator.class.getClassLoader().getResource("mzIdentML1.1.0.xsd");
-            if (url == null || url.getPath().length() == 0) {
-                throw new IllegalStateException("MzIdentML1.1.0.xsd not found!");
-            }
-            genericValidator.setSchema(url.toURI());
-            ErrorHandlerIface handler = new ValidationErrorHandler();
-            genericValidator.setErrorHandler(handler);
-            genericValidator.validate(br);
-            List<String> errorMessages = handler.getErrorMessages();
-            for(String error: errorMessages){
-                report.addException(new IOException(error), ValidationMessage.Type.ERROR);
-            }
-        } catch (IOException | SAXException | URISyntaxException e ) {
-            report.addException(e, ValidationMessage.Type.ERROR);
-        }
+//        try (BufferedReader br = new BufferedReader(new FileReader(mzIdentML))) {
+//            GenericSchemaValidator genericValidator = new GenericSchemaValidator();
+//            URL url =  MzIdValidator.class.getClassLoader().getResource("mzIdentML1.1.0.xsd");
+//            if (url == null || url.getPath().length() == 0) {
+//                throw new IllegalStateException("MzIdentML1.2.0.xsd not found!");
+//            }
+//            genericValidator.setSchema(url.toURI());
+//            ErrorHandlerIface handler = new ValidationErrorHandler();
+//            genericValidator.setErrorHandler(handler);
+//            genericValidator.validate(br);
+//            List<String> errorMessages = handler.getErrorMessages();
+//            for(String error: errorMessages){
+//                report.addException(new IOException(error), ValidationMessage.Type.ERROR);
+//            }
+//        } catch (IOException | SAXException | URISyntaxException e ) {
+//            report.addException(e, ValidationMessage.Type.ERROR);
+//        }
         return report;
   }
 }
