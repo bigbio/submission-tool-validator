@@ -29,7 +29,7 @@ public class ResultReport extends Report {
         String peakReportSection = "";
         for (int i = 0; i < peakReports.size(); i++) {
             PeakReport peakReport = peakReports.get(i);
-            peakReportSection = "PEAK" + i +'\t' + peakReport.toString() + "\n";
+            peakReportSection += "PEAK" + i +'\t' + peakReport.toString() + "\n";
         }
         return super.toString() +
                 "Assay file : " + assayFile + "\n" +
