@@ -1,5 +1,7 @@
 # ProteomeXchange Submission Validator
 
+[![Java CI with Maven](https://github.com/bigbio/submission-tool-validator/actions/workflows/maven.yml/badge.svg)](https://github.com/bigbio/submission-tool-validator/actions/workflows/maven.yml)
+
 This tool helps user to validate submissions in the client side before submitting to PRIDE. It is specially useful for Big submissions
 
 ## Minimum requirements
