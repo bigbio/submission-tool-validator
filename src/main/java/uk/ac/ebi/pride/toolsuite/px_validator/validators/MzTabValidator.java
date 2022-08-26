@@ -24,6 +24,8 @@ public class MzTabValidator implements Validator{
     private List<File> peakFilesFromCmdLine;
     boolean isPeakValidationSkipped = false;
 
+    private File outputFile;
+
     public static Validator getInstance(CommandLine cmd) throws Exception {
         return new MzTabValidator(cmd);
     }
@@ -32,6 +34,7 @@ public class MzTabValidator implements Validator{
 
         if(cmd.hasOption(Utility.ARG_MZTAB)){
             file = new File(cmd.getOptionValue(Utility.ARG_MZTAB));
+            outputFile = new File(cmd.getOptionValue(Utility.ARG_OUTPUTFILE));
             if (!file.exists()){
                 throw new IOException("The provided file name can't be found -- "
                         + cmd.getOptionValue(Utility.ARG_MZTAB));
@@ -49,7 +52,7 @@ public class MzTabValidator implements Validator{
     public IReport validate() {
         ResultReport report = new ResultReport();
         try {
-            MZTabFileParser mzTab = new MZTabFileParser(file, new FileOutputStream(file.getAbsolutePath() + "-mztab-errors.out"));
+            MZTabFileParser mzTab = new MZTabFileParser(file, new FileOutputStream(outputFile));
 
             for(MZTabError message: mzTab.getErrorList().getErrorList()){
                 ValidationMessage.Type errType;

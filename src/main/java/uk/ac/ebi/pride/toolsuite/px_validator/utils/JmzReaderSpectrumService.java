@@ -14,15 +14,19 @@ import uk.ac.ebi.pride.tools.mzxml_parser.MzXMLParsingException;
 import uk.ac.ebi.pride.tools.pkl_parser.PklFile;
 import uk.ac.ebi.pride.tools.pride_wrapper.PRIDEXmlWrapper;
 import uk.ac.ebi.pride.utilities.util.Triple;
+import uk.ac.ebi.pride.utilities.util.Tuple;
 
 import java.io.File;
 import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 @Slf4j
 public class JmzReaderSpectrumService {
+    public static final Pattern patternScanInTitle = Pattern.compile("^.*scan=(\\d+).*$");
 
     /**
      * Map of all readers containing the spectra
@@ -83,8 +87,46 @@ public class JmzReaderSpectrumService {
      */
     public Spectrum getSpectrumById(String filePath, String id) throws JMzReaderException {
         JMzReader reader = readers.get(filePath);
+
         try{
-            return reader.getSpectrumById(id);
+            // Remove the scan prefix if the id starts like scan=ScanNum
+            if(id.startsWith("scan="))
+                id = id.replace("scan=", "");
+
+            Spectrum spec = null;
+            if(reader.getSpectraIds().contains(id)){
+                spec = reader.getSpectrumById(id);
+            }
+
+            /***
+             * In some cases the id is written wronly and the scan is annotated as controllerType=0 controllerNumber=1 scan=1 while in the
+             * mzidentml is annotated as scan=1
+             */
+            String finalId = id;
+            if (spec == null){
+
+                List<Tuple<String, String>> spectra = reader.getSpectraIds()
+                        .stream().filter(x -> x.contains(finalId))
+                        .map(x -> new Tuple<>(x, x)).collect(Collectors.toList());
+                if(spectra.size() == 1)
+                    spec =  reader.getSpectrumById(spectra.get(0).getValue());
+                else{
+                    spectra = reader.getSpectraIds().stream().map(x-> {
+                        String[] scans = x.split(" ");
+                        for(String idScan: scans){
+                            if(idScan.contains("scan")){
+                                return new Tuple<>(idScan.trim(),x);
+                            }
+                        }
+                        return new Tuple<>(x,x);
+                    }).collect(Collectors.toList()).stream().filter(x -> x.getKey().equalsIgnoreCase("scan=" + finalId)).collect(Collectors.toList());
+                    if(spectra.size() == 1)
+                        spec =  reader.getSpectrumById(spectra.get(0).getValue());
+                }
+            }
+            if(spec != null && spec.getMsLevel() == 1)
+                spec = null;
+            return spec;
         }catch (NumberFormatException e){
             throw new JMzReaderException("Error parsing the following Accession -- " + id);
         }

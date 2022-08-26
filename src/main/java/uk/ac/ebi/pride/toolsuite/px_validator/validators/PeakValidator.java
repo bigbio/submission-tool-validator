@@ -233,7 +233,7 @@ public class PeakValidator {
             boolean isFound = false;
             for (SpectraData spectraData : spectraDataInMzIdentML) { // spectra data in mzIdentML file
                 String filename = Utility.getRealFileName(spectraData.getLocation());
-                if(filename.equalsIgnoreCase(peakFileFromCmdLine.getName())){
+                if(filename.equalsIgnoreCase(peakFileFromCmdLine.getName()) || filename.equalsIgnoreCase(peakFileFromCmdLine.getName()+".gz") ){
                     isFound = true;
                     break;
                 }
